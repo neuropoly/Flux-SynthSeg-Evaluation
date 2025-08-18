@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Poster Figures Gallery</title>
+  <meta name="description" content="Interactive figures for the poster" />
+  <meta name="theme-color" content="#f3f4f6" />
+  <style>
+    :root{
+      /* Light theme */
+      --bg:#f3f4f6;           /* light gray background */
+      --card:#ffffff;         /* card surface */
+      --muted:#4b5563;        /* gray-600 */
+      --text:#111827;         /* gray-900 */
+      --accent:#0ea5e9;       /* sky-500 */
+      --chip:#eef2f7;         /* pill bg */
+      --chip-border:#d1d5db;  /* gray-300 */
+      --chip-hover:#e5e7eb;   /* gray-200 */
+      --ring:#22c55e;         /* green-500 */
+      --border:#e5e7eb;       /* card border */
+      --shadow:0 10px 20px rgba(0,0,0,.06);
+    }
+    html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+      font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Arial}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:1280px;margin:0 auto;padding:clamp(16px,3vw,28px)}
+    header{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+    h1{font-size:clamp(1.1rem,2vw,1.6rem);margin:0 12px 0 0}
+    .muted{color:var(--muted)}
+    .controls{display:flex;gap:10px;flex:1;min-width:260px;flex-wrap:wrap}
+    input[type="search"]{
+      flex:1;min-width:220px;background:#fff;border:1px solid var(--chip-border);border-radius:12px;
+      padding:12px 14px;color:var(--text);outline:none;box-shadow:var(--shadow)
+    }
+    input[type="search"]:focus{border-color:var(--ring);box-shadow:0 0 0 3px #22c55e33}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{
+      background:var(--chip);border:1px solid var(--chip-border);border-radius:999px;
+      padding:8px 12px;font-size:.95rem;cursor:pointer
+    }
+    .chip.active,.chip:hover{background:var(--chip-hover)}
+
+    /* Bigger cards & thumbnails */
+    .grid{
+      display:grid;gap:18px;margin-top:16px
+    }
+    /* Phone: single large column */
+    @media (max-width: 640px){
+      .grid{grid-template-columns:1fr}
+    }
+    /* Tablet: large two columns */
+    @media (min-width: 641px) and (max-width: 1023px){
+      .grid{grid-template-columns:repeat(2, minmax(0, 1fr))}
+    }
+    /* Desktop: roomy 2–3 columns depending on width */
+    @media (min-width: 1024px){
+      .grid{grid-template-columns:repeat( auto-fit, minmax(360px, 1fr) )}
+    }
+
+    .card{
+      background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;
+      display:flex;flex-direction:column;box-shadow:var(--shadow)
+    }
+    .thumb{
+      /* Bigger visual area: 4:3 and taller on mobile */
+      aspect-ratio:4/3;display:block;background:#fafafa;position:relative
+    }
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .thumb .badge{
+      position:absolute;right:10px;top:10px;background:#ffffffcc;border:1px solid var(--border);
+      border-radius:10px;padding:6px 8px;font-size:.8rem
+    }
+    .card h3{font-size:1.05rem;margin:12px 14px 6px 14px}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;margin:0 14px 12px 14px}
+    .tag{font-size:.8rem;background:#f8fafc;border:1px solid var(--border);border-radius:999px;padding:4px 10px;color:#334155}
+    .meta{display:flex;justify-content:space-between;align-items:center;margin:0 14px 14px 14px}
+    .btn{
+      display:inline-flex;align-items:center;gap:6px;border:1px solid var(--chip-border);
+      border-radius:12px;padding:10px 12px;background:#fff;cursor:pointer
+    }
+    .btn:hover{background:#f9fafb}
+
+    .empty{padding:40px;text-align:center;color:var(--muted)}
+
+    footer{margin-top:22px;color:var(--muted);font-size:.95rem}
+
+    /* Modal (mobile-friendly, safe-area aware) */
+    .modal{
+      position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;
+      padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+               max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+      z-index:50
+    }
+    .modal.show{display:flex}
+    .sheet{
+      width:min(1100px,100%);height:min(92vh,1000px);background:#fff;border:1px solid var(--border);
+      border-radius:16px;overflow:hidden;display:flex;flex-direction:column
+    }
+    .sheet header{
+      padding:10px 12px;background:#f8fafc;border-bottom:1px solid var(--border);margin:0;gap:10px;display:flex;align-items:center
+    }
+    .sheet header .title{font-weight:600}
+    .sheet .actions{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
+    iframe{flex:1;border:0;background:#fff}
+
+    /* Larger tap targets on mobile */
+    @media (max-width:640px){
+      .btn{padding:12px 14px}
+      .card h3{font-size:1.1rem}
+    }
+    .kbd{border:1px solid var(--chip-border);border-bottom-width:3px;background:#f8fafc;border-radius:6px;padding:2px 6px;font-size:.85em}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Interactive Figures for the poster:</h1>
+      <h1>Evaluating SynthSeg’s Pediatric Brain Segmentations: Longitudinal Volume Assessments, Preprocessing Effects, and Guidelines for Improved Accuracy (Flux 2025)</h1>
+      <div class="muted">Poster companion</div>
+      <div class="controls">
+        <input id="q" type="search" placeholder="Search title or tags…" aria-label="Search figures" />
+        <div class="chips" id="chips"></div>
+      </div>
+    </header>
+
+    <div id="grid" class="grid" aria-live="polite"></div>
+    <div id="empty" class="empty" hidden>No figures match your filters.</div>
+
+    <footer>
+      Tip: Tap a card to open the interactive figure.  
+      Press <span class="kbd">Esc</span> to close viewer. Share a deep link via the 🔗 button.
+    </footer>
+  </div>
+
+  <!-- Modal Viewer -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Figure viewer">
+    <div class="sheet">
+      <header>
+        <div class="title" id="title"></div>
+        <div class="actions">
+          <a id="openNew" class="btn" target="_blank" rel="noopener">Open ↗</a>
+          <button id="copyLink" class="btn" type="button">🔗 Copy link</button>
+          <button id="close" class="btn" type="button">✕ Close</button>
+        </div>
+      </header>
+      <iframe id="frame" title="Interactive figure"></iframe>
+    </div>
+  </div>
+
+  <script>
+    // === Register your figures here ===
+    const FIGURES = [
+      { title: "Growth model: RMSD% versus age by region", file: "figs/RMSD_percentage_vs_age_with_errors.html",
+        thumb: "assets/RMSD_percentage_vs_age_with_errors.png", tags: ["GAM","RMSD","regions"] },
+      { title: "GAM fits on volumes versus age by region", file: "figs/GAM_fits_prep_vs_no_prep.html",
+      thumb: "assets/GAM_fits_prep_vs_no_prep.png", tags: ["GAM","volumes","regions"] },
+      { title: "Longitudinal trajectories of residuals percentage versus age by region", file: "figs/residuals_percentage_vs_age.html",
+        thumb: "assets/residuals_percentage_vs_age.png", tags: ["volumes","longitudinal","regions"] },
+      { title: "QC Gallery (2–23 months)", file: "fig_qc.html", tags: ["QC","pipeline"] },
+    ];
+
+    // === Gallery logic (unchanged, with mobile-friendly defaults) ===
+    const grid = document.getElementById('grid');
+    const empty = document.getElementById('empty');
+    const chipsBox = document.getElementById('chips');
+    const q = document.getElementById('q');
+
+    const norm = s => (s||'').toLowerCase();
+    const slugify = s => norm(s).replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+    FIGURES.forEach(f => f.slug = f.slug || slugify(f.title));
+
+    const allTags = Array.from(new Set(FIGURES.flatMap(f => f.tags||[]))).sort();
+    const activeTags = new Set();
+
+    function renderChips(){
+      chipsBox.innerHTML = '';
+      allTags.forEach(t=>{
+        const b = document.createElement('button');
+        b.className = 'chip'; b.textContent = t;
+        b.onclick = () => { activeTags.has(t) ? activeTags.delete(t) : activeTags.add(t); render(); };
+        if (activeTags.has(t)) b.classList.add('active');
+        chipsBox.appendChild(b);
+      });
+      if (allTags.length===0) chipsBox.remove();
+    }
+
+    function filterData(){
+      const qv = norm(q.value);
+      return FIGURES.filter(f=>{
+        const hay = [f.title, ...(f.tags||[])].map(norm).join(' ');
+        const textMatch = !qv || hay.includes(qv);
+        const tagMatch = activeTags.size===0 || (f.tags||[]).some(t=>activeTags.has(t));
+        return textMatch && tagMatch;
+      });
+    }
+
+    function cardHTML(f){
+      const tags = (f.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+      const media = f.thumb
+        ? `<img src="${f.thumb}" alt="">`
+        : `<div class="badge">HTML</div>`;
+      return `
+        <article class="card" data-slug="${f.slug}" data-file="${f.file}">
+          <a class="thumb" href="#${f.slug}" title="Open ${f.title}">${media}</a>
+          <h3>${f.title}</h3>
+          <div class="tags">${tags}</div>
+          <div class="meta">
+            <a class="btn" href="#${f.slug}" title="Open in viewer">View</a>
+            <a class="btn" href="${f.file}" target="_blank" rel="noopener" title="Open in new tab">↗</a>
+          </div>
+        </article>
+      `;
+    }
+
+    function render(){
+      const data = filterData();
+      grid.innerHTML = data.map(cardHTML).join('');
+      empty.hidden = data.length !== 0;
+
+      grid.querySelectorAll('.card .thumb, .card .btn:first-child').forEach(a=>{
+        a.addEventListener('click', (e)=>{
+          e.preventDefault();
+          const card = a.closest('.card');
+          openModal(card.dataset.slug, card.dataset.file);
+        });
+      });
+      Array.from(chipsBox.children).forEach(b=>{
+        b.classList.toggle('active', activeTags.has(b.textContent));
+      });
+    }
+
+    q.addEventListener('input', render);
+
+    // Modal & deep-linking
+    const modal = document.getElementById('modal');
+    const frame = document.getElementById('frame');
+    const titleEl = document.getElementById('title');
+    const closeBtn = document.getElementById('close');
+    const copyBtn = document.getElementById('copyLink');
+    const openNew = document.getElementById('openNew');
+
+    function openModal(slug, file){
+      const f = FIGURES.find(x=>x.slug===slug) || {title:file,file};
+      titleEl.textContent = f.title;
+      openNew.href = f.file;
+      frame.src = f.file; // load on demand
+      modal.classList.add('show');
+      history.replaceState(null,'', '#'+slug);
+    }
+    function closeModal(){
+      modal.classList.remove('show');
+      frame.src = 'about:blank';
+    }
+    closeBtn.onclick = closeModal;
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+
+    copyBtn.onclick = async ()=>{
+      try{
+        await navigator.clipboard.writeText(location.href);
+        copyBtn.textContent = '✅ Copied';
+        setTimeout(()=>copyBtn.textContent='🔗 Copy link',1200);
+      }catch{}
+    };
+
+    function maybeOpenFromHash(){
+      const slug = (location.hash||'').replace(/^#/,'');
+      if(!slug) return;
+      const f = FIGURES.find(x=>x.slug===slug);
+      if(f) openModal(f.slug, f.file);
+    }
+
+    renderChips();
+    render();
+    window.addEventListener('hashchange', maybeOpenFromHash);
+    maybeOpenFromHash();
+  </script>
+</body>
+</html>
