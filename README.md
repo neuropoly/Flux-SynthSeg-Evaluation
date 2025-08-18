@@ -2,6 +2,6 @@
 
 ## Interactive Figures
 
-👉 [View the interactive figures here](https://andjelaaaa.github.io/Flux-SynthSeg-Evaluation/)
+👉 [View the interactive figures here](https://neuropoly.github.io/Flux-SynthSeg-Evaluation/)
 
 
