@@ -7,7 +7,7 @@
 Flux 2025; 04–06 September 2025, Dublin, Ireland  
 
 **Authors:**  
-Andjela Dimitrijevic¹ ², Alexia Mahlig¹, Fanny Dégeilh³, and Benjamin De Leener¹ ² ⁴  
+**Andjela Dimitrijevic¹ ²**, Alexia Mahlig¹, Fanny Dégeilh³, and Benjamin De Leener¹ ² ⁴  
 
 <sub>
 ¹ NeuroPoly Lab, Institute of Biomedical Engineering, Polytechnique Montréal, Montreal, QC, Canada  
