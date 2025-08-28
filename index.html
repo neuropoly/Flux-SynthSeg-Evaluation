@@ -57,7 +57,15 @@
     @media (min-width: 1024px){
       .grid{grid-template-columns:repeat( auto-fit, minmax(360px, 1fr) )}
     }
-
+    .authors {
+      margin: 0 14px 12px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+    header .authors {
+  flex: 0 0 100%;  /* force authors to take the full row */
+  }
     .card{
       background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;
       display:flex;flex-direction:column;box-shadow:var(--shadow)
@@ -124,10 +132,26 @@
     <header>
       <h1>Interactive Figures for the Poster:</h1>
       <h1>Evaluating SynthSeg’s Pediatric Brain Segmentations: Longitudinal Volume Assessments, Preprocessing Effects, and Guidelines for Improved Accuracy (Flux 2025)</h1>
-       <a href="assets/Flux_2025_09.pdf" class="btn" target="_blank" style="margin:12px 0;">
-    📄 Download Full Poster (PDF)
+
+      <p class="authors">
+        <strong>Authors:</strong>
+        <strong>Andjela Dimitrijevic</strong>, Alexia Mahlig, Fanny Dégeilh, and Benjamin De Leener
+      </p>
+
+      <!-- force full-width so it drops below the authors: -->
+      <a
+        href="assets/Flux_2025_09.pdf"
+        class="btn"
+        target="_blank"
+        style="
+          margin: 12px 0;
+          font-size: 1.2rem;
+          padding: 12px 24px;
+        "
+      >
+        📄 Download Full Poster (PDF)
       </a>
-      <div class="muted">Poster companion</div>
+
       <div class="controls">
         <input id="q" type="search" placeholder="Search title or tags…" aria-label="Search figures" />
         <div class="chips" id="chips"></div>
@@ -174,7 +198,7 @@
         description: "Residuals % is a single‐number summary of how much an individual’s measured volume deviates from the values the GAM predicts for their age. % Residual = 100 × Residual / Predicted"
       },
       { title: "QC Segmentations & Outlier Removal Results", file: "figs/removals_bubble_plot.html", thumb: "assets/removals_bubble_plot.png", tags: ["QC","Outlier Removal"],
-        description: "Hover over a bubble to see how many sessions were dropped at that age and what percentage of that pipeline as well as drop-type’s total removals in this region."
+        description: "Hover over a bubble to see how many sessions were dropped at that age and what percentage of that pipeline is removed. Drop-down is per region where you can see the drop type; volumes ==0, 3σ GAM outliers and QC score < 65%."
        },
       { title: "GAM Fits on QC Scores per 8 Global Regions", file: "figs/GAM_fits_qc_raw_prep_vs_no_prep.html", thumb: "assets/GAM_fits_qc_raw_prep_vs_no_prep.png", tags: ["QC", 'GAM'], 
         description: "Regions with a significant difference between pipelines (p < 0.05) are marked with a “*” next to their name in the dropdown."
@@ -188,8 +212,8 @@
         description: "Regional RMSD (%) from the population GAM, compared between No-prep and Prep pipelines. Boxplots show the distribution of % deviation. Adjacent annotations show the removal rate (% of initial sessions) and the mean removal age (months). Significance between pipelines per region is denoted by * (p < 0.05), ** (p < 0.01) and *** (p < 0.001)."
        },
        { title: "QC Fails (<65%) & Mean Ages by Region & Pipeline", file: "figs/qc_heatmap.html",
-        thumb: "assets/heatmap_qc_below_65.png", tags: ["QC","Regions"],
-        description: "Regional RMSD (%) from the population GAM, compared between No-prep and Prep pipelines. Boxplots show the distribution of % deviation. Adjacent annotations show the removal rate (% of initial sessions) and the mean removal age (months). Significance between pipelines per region is denoted by * (p < 0.05), ** (p < 0.01) and *** (p < 0.001)."
+        thumb: "assets/heatmap_qc_below_65.png", tags: ["QC","Regions", "Outlier Removal"],
+        description: "Heatmap of QC outputs by SynthSeg for 8 global regions"
        },
     ];
 
@@ -229,22 +253,27 @@
     }
 
     function cardHTML(f){
-      const tags = (f.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
-      const media = f.thumb
-        ? `<img src="${f.thumb}" alt="">`
-        : `<div class="badge">HTML</div>`;
-      return `
-        <article class="card" data-slug="${f.slug}" data-file="${f.file}">
-          <a class="thumb" href="#${f.slug}" title="Open ${f.title}">${media}</a>
-          <h3>${f.title}</h3>
-          <div class="tags">${tags}</div>
-          <div class="meta">
-            <a class="btn" href="#${f.slug}" title="Open in viewer">View</a>
-            <a class="btn" href="${f.file}" target="_blank" rel="noopener" title="Open in new tab">↗</a>
-          </div>
-        </article>
-      `;
-    }
+        const tags = (f.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+        const media = f.thumb
+          ? `<img src="${f.thumb}" alt="">`
+          : `<div class="badge">HTML</div>`;
+        // insert description right after title (or wherever you like)
+        const desc = f.description
+          ? `<p class="description">${f.description}</p>`
+          : '';
+        return `
+          <article class="card" data-slug="${f.slug}" data-file="${f.file}">
+            <a class="thumb" href="#${f.slug}" title="Open ${f.title}">${media}</a>
+            <h3>${f.title}</h3>
+            ${desc}
+            <div class="tags">${tags}</div>
+            <div class="meta">
+              <a class="btn" href="#${f.slug}" title="Open in viewer">View</a>
+              <a class="btn" href="${f.file}" target="_blank" rel="noopener">↗</a>
+            </div>
+          </article>
+        `;
+      }
 
     function render(){
       const data = filterData();
