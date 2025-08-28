@@ -57,12 +57,17 @@
     @media (min-width: 1024px){
       .grid{grid-template-columns:repeat( auto-fit, minmax(360px, 1fr) )}
     }
+    .footer-content {
+    font-size: 1.1rem;
+    color: var(--muted);
+  }
     .authors {
-      margin: 0 14px 12px;
+      align-self: flex-start;
       color: var(--muted);
-      font-size: 1rem;
+      font-size: 1.2rem;
       line-height: 1.4;
     }
+    
     header .authors {
   flex: 0 0 100%;  /* force authors to take the full row */
   }
@@ -98,6 +103,18 @@
     .empty{padding:40px;text-align:center;color:var(--muted)}
 
     footer{margin-top:22px;color:var(--muted);font-size:.95rem}
+    footer {
+        position: relative;    /* make it the positioning context */
+        padding: 1rem;
+      }
+
+      footer .copyright {
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
 
     /* Modal (mobile-friendly, safe-area aware) */
     .modal{
@@ -117,6 +134,15 @@
     .sheet header .title{font-weight:600}
     .sheet .actions{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap}
     iframe{flex:1;border:0;background:#fff}
+    input[type="search"] {
+    font-size: 1rem;      /* make the typed text bigger */
+    padding: 12px 14px;     /* adjust if you want more height */
+  }
+
+  input[type="search"]::placeholder {
+    font-size: 1.2rem;      /* make the placeholder text bigger, too */
+    color: var(--muted);    /* keep the muted color if you like */
+  }
 
     /* Larger tap targets on mobile */
     @media (max-width:640px){
@@ -135,9 +161,23 @@
 
       <p class="authors">
         <strong>Authors:</strong>
-        <strong>Andjela Dimitrijevic</strong>, Alexia Mahlig, Fanny Dégeilh, and Benjamin De Leener
-      </p>
+        <u>Andjela Dimitrijevic</u>, Alexia Mahlig, Fanny Dégeilh, and Benjamin De Leener
+        &nbsp;
+        <a href="https://github.com/neuropoly/Flux-SynthSeg-Evaluation"
+          class="btn"
+          style="font-size:1rem; padding:6px 12px;"
+          target="_blank"
+          rel="noopener">
+          🔗 GitHub
+        </a>
+      
 
+  <!-- move your tip into the header as the last element -->
+  <div class="footer-content">
+    Tips: Tap a card to open the interactive figure.  
+    Click <span class="kbd">Open</span> to view fullscreen. 
+    Share a deep link via the 🔗 button. Press <span class="kbd">Esc</span> to close viewer.
+  </div>
       <!-- force full-width so it drops below the authors: -->
       <a
         href="assets/Flux_2025_09.pdf"
@@ -162,8 +202,9 @@
     <div id="empty" class="empty" hidden>No figures match your filters.</div>
 
     <footer>
-      Tip: Tap a card to open the interactive figure.  
-      Press <span class="kbd">Esc</span> to close viewer. Share a deep link via the 🔗 button.
+    
+      <div class="copyright">© 2025 Andjela Dimitrijevic</div>
+    </div>
     </footer>
   </div>
 
