@@ -80,6 +80,12 @@
       border-radius:12px;padding:10px 12px;background:#fff;cursor:pointer
     }
     .btn:hover{background:#f9fafb}
+    .card .description {
+      margin: 0 14px 12px;
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.3;
+    }
 
     .empty{padding:40px;text-align:center;color:var(--muted)}
 
@@ -111,12 +117,16 @@
     }
     .kbd{border:1px solid var(--chip-border);border-bottom-width:3px;background:#f8fafc;border-radius:6px;padding:2px 6px;font-size:.85em}
   </style>
+
 </head>
 <body>
   <div class="wrap">
     <header>
       <h1>Interactive Figures for the Poster:</h1>
       <h1>Evaluating SynthSeg’s Pediatric Brain Segmentations: Longitudinal Volume Assessments, Preprocessing Effects, and Guidelines for Improved Accuracy (Flux 2025)</h1>
+       <a href="assets/Flux_2025_09.pdf" class="btn" target="_blank" style="margin:12px 0;">
+    📄 Download Full Poster (PDF)
+      </a>
       <div class="muted">Poster companion</div>
       <div class="controls">
         <input id="q" type="search" placeholder="Search title or tags…" aria-label="Search figures" />
@@ -152,15 +162,35 @@
     // === Register your figures here ===
     const FIGURES = [
       { title: "Growth model: RMSD% versus Age by Region", file: "figs/RMSD_percentage_vs_age_with_errors.html",
-        thumb: "assets/RMSD_percentage_vs_age_with_errors.png", tags: ["GAM","RMSD","Regions"] },
+        thumb: "assets/RMSD_percentage_vs_age_with_errors.png", tags: ["GAM","RMSD","Regions"],
+        description: "RMSD % is a single‐number summary of how much an individual’s measured volumes deviate, on average, from the values the GAM predicts for their age. RMSD % = √mean((% Residual)²"
+  },
       { title: "GAM Fits on Volumes Versus Age by Region", file: "figs/GAM_fits_vols_prep_vs_no_prep.html",
-      thumb: "assets/GAM_fits_vols_prep_vs_no_prep.png", tags: ["GAM","Volumes","Regions"] },
+      thumb: "assets/GAM_fits_vols_prep_vs_no_prep.png", tags: ["GAM","Volumes","Regions"],
+    description: "Regions with a significant difference between pipelines (p < 0.05) are marked with a “*” next to their name in the dropdown."
+   },
       { title: "Longitudinal Trajectories of Residuals Percentage Versus Age by Region", file: "figs/residuals_percentage_vs_age.html",
-        thumb: "assets/residuals_percentage_vs_age.png", tags: ["Volumes", "Residuals", "Longitudinal","Regions"] },
-      { title: "QC Segmentations & Outlier Removal Results", file: "figs/removals_bubble_plot.html", thumb: "assets/removals_bubble_plot.png", tags: ["QC","Outlier Removal"] },
-      { title: "GAM Fits on QC Scores per 8 Global Regions", file: "figs/GAM_fits_qc_raw_prep_vs_no_prep.html", thumb: "assets/GAM_fits_qc_raw_prep_vs_no_prep.png", tags: ["QC", 'GAM'] },
+        thumb: "assets/residuals_percentage_vs_age.png", tags: ["Volumes", "Residuals", "Longitudinal","Regions"],
+        description: "Residuals % is a single‐number summary of how much an individual’s measured volume deviates from the values the GAM predicts for their age. % Residual = 100 × Residual / Predicted"
+      },
+      { title: "QC Segmentations & Outlier Removal Results", file: "figs/removals_bubble_plot.html", thumb: "assets/removals_bubble_plot.png", tags: ["QC","Outlier Removal"],
+        description: "Hover over a bubble to see how many sessions were dropped at that age and what percentage of that pipeline as well as drop-type’s total removals in this region."
+       },
+      { title: "GAM Fits on QC Scores per 8 Global Regions", file: "figs/GAM_fits_qc_raw_prep_vs_no_prep.html", thumb: "assets/GAM_fits_qc_raw_prep_vs_no_prep.png", tags: ["QC", 'GAM'], 
+        description: "Regions with a significant difference between pipelines (p < 0.05) are marked with a “*” next to their name in the dropdown."
+       },
       { title: "Longitudinal Trajectories of Volumes Versus Age by Region", file: "figs/volume_trajectories.html",
-        thumb: "assets/volume_trajectories.png", tags: ["Volumes","Longitudinal","Regions"] },
+        thumb: "assets/volume_trajectories.png", tags: ["Volumes","Longitudinal","Regions"],
+        description: "Select each pipeline to see how their longitudinal volume curves for each subject differ."
+       },
+      { title: "Boxplots of Regional RMSD (%) from the population GAM", file: "figs/rmsd_percent_comparison.html",
+        thumb: "assets/main_boxplot.png", tags: ["Volumes","Longitudinal","Regions"],
+        description: "Regional RMSD (%) from the population GAM, compared between No-prep and Prep pipelines. Boxplots show the distribution of % deviation. Adjacent annotations show the removal rate (% of initial sessions) and the mean removal age (months). Significance between pipelines per region is denoted by * (p < 0.05), ** (p < 0.01) and *** (p < 0.001)."
+       },
+       { title: "QC Fails (<65%) & Mean Ages by Region & Pipeline", file: "figs/qc_heatmap.html",
+        thumb: "assets/heatmap_qc_below_65.png", tags: ["QC","Regions"],
+        description: "Regional RMSD (%) from the population GAM, compared between No-prep and Prep pipelines. Boxplots show the distribution of % deviation. Adjacent annotations show the removal rate (% of initial sessions) and the mean removal age (months). Significance between pipelines per region is denoted by * (p < 0.05), ** (p < 0.01) and *** (p < 0.001)."
+       },
     ];
 
     // === Gallery logic (unchanged, with mobile-friendly defaults) ===
