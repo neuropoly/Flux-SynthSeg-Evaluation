@@ -40,7 +40,12 @@
       padding:8px 12px;font-size:.95rem;cursor:pointer
     }
     .chip.active,.chip:hover{background:var(--chip-hover)}
-
+    .view-count {
+  text-align: right;
+  font-size: .9rem;
+  color: var(--muted);
+  margin: 8px 14px;
+  }
     /* Bigger cards & thumbnails */
     .grid{
       display:grid;gap:18px;margin-top:16px
@@ -153,6 +158,8 @@
   </style>
 
 </head>
+
+
 <body>
   <div class="wrap">
     <header>
@@ -171,7 +178,6 @@
           🔗 GitHub
         </a>
       
-
   <!-- move your tip into the header as the last element -->
   <div class="footer-content">
     Tips: Tap a card to open the interactive figure.  
@@ -197,6 +203,21 @@
         <div class="chips" id="chips"></div>
       </div>
     </header>
+    <div id="view-count" class="view-count">Loading views…</div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+      const vc = document.getElementById('view-count');
+      fetch('https://api.countapi.xyz/hit/flux2025/poster-gallery')
+        .then(r => r.json())
+        .then(data => {
+          vc.textContent = `👀 ${data.value.toLocaleString()} views`;
+        })
+        .catch(err => {
+          console.warn('Counter error', err);
+          vc.textContent = '';
+        });
+      });
+    </script>
 
     <div id="grid" class="grid" aria-live="polite"></div>
     <div id="empty" class="empty" hidden>No figures match your filters.</div>
